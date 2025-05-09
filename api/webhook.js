@@ -10,12 +10,11 @@ export default async function handler(req, res) {
 
   const message = body?.message?.body?.toLowerCase() || '';
   const rawPhone = body?.ticket?.contact?.number || '';
-  const ticketId = body?.message?.ticketId;
   const keyword = process.env.KEYWORD?.toLowerCase();
 
-  // Limpa qualquer caractere não numérico e monta o número no formato internacional
+  // Limpa qualquer caractere não numérico e monta o número no formato DDI + DDD + número, sem "+"
   const cleanPhone = rawPhone.replace(/\D/g, '');
-  const phone = cleanPhone.startsWith('55') ? `+${cleanPhone}` : `+55${cleanPhone}`;
+  const phone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
 
   if (message.includes(keyword)) {
     const response = await fetch(process.env.TEIA_API_URL, {
@@ -43,7 +42,7 @@ Contrate a sua falando agora com minha equipe no link abaixo:
     });
 
     const result = await response.json();
-    return res.status(200).json({ success: true, sent: true, result });
+    return res.status(200).json({ success: true, sent: true, number: phone, result });
   }
 
   return res.status(200).json({ success: true, sent: false });
