@@ -12,9 +12,12 @@ export default async function handler(req, res) {
   const rawPhone = body?.ticket?.contact?.number || '';
   const keyword = process.env.KEYWORD?.toLowerCase();
 
-  // Limpa qualquer caractere não numérico e monta o número no formato DDI + DDD + número, sem "+"
+  // Limpa qualquer caractere não numérico e monta o número no formato internacional
   const cleanPhone = rawPhone.replace(/\D/g, '');
   const phone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
+
+  // Log do número para debugar
+  console.log('Número formatado:', phone);
 
   if (message.includes(keyword)) {
     const response = await fetch(process.env.TEIA_API_URL, {
