@@ -3,16 +3,19 @@ dotenv.config();
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST method is allowed' });
+    return res.status(405).json({ error: 'Envie um metodo POST via WhatsTEIA' });
   }
 
   const body = req.body;
 
   const message = body?.message?.body?.toLowerCase() || '';
-  // Corrigido: O número de telefone está dentro de `ticket.contact.number`
-  const phone = body?.ticket?.contact?.number || '';
+  const rawPhone = body?.ticket?.contact?.number || '';
   const ticketId = body?.message?.ticketId;
   const keyword = process.env.KEYWORD?.toLowerCase();
+
+  // Limpa qualquer caractere não numérico e monta o número no formato internacional
+  const cleanPhone = rawPhone.replace(/\D/g, '');
+  const phone = cleanPhone.startsWith('55') ? `+${cleanPhone}` : `+55${cleanPhone}`;
 
   if (message.includes(keyword)) {
     const response = await fetch(process.env.TEIA_API_URL, {
@@ -23,13 +26,13 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         body: `Uhuuuu!
-  fico feliz que você tenha testado a nossa IA VENDEDOR VIRTUAL.
+fico feliz que você tenha testado a nossa IA VENDEDOR VIRTUAL.
 
-  Contrate a sua falando agora com minha equipe no link abaixo:
+Contrate a sua falando agora com minha equipe no link abaixo:
 
-  *wa.me/5511950266656*
+*wa.me/5511950266656*
 
-  ótimas vendas, @joaocarlosvendas`,
+ótimas vendas, @joaocarlosvendas`,
         number: phone,
         externalKey: process.env.EXTERNAL_KEY || ("Ticket-" + ticketId),
         note: {
