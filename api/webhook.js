@@ -9,8 +9,8 @@ export default async function handler(req, res) {
   const body = req.body;
 
   const message = body?.message?.body?.toLowerCase() || '';
-  // Pega o número diretamente do campo `contact.number`
-  const phone = body?.contact?.number || '';
+  // Corrigido: O número de telefone está dentro de `ticket.contact.number`
+  const phone = body?.ticket?.contact?.number || '';
   const ticketId = body?.message?.ticketId;
   const keyword = process.env.KEYWORD?.toLowerCase();
 
