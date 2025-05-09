@@ -34,7 +34,7 @@ Contrate a sua falando agora com minha equipe no link abaixo:
 
 ótimas vendas, @joaocarlosvendas`,
         number: phone,
-        externalKey: process.env.EXTERNAL_KEY || ("Ticket-" + ticketId),
+        externalKey: process.env.EXTERNAL_KEY,
         note: {
           body: "Mensagem automática via webhook por *_Júnior Santos_*",
           mediaUrl: ""
