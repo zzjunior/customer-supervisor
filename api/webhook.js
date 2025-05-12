@@ -27,7 +27,7 @@ export default async function handler(req, res) {
           number: rawPhone,  // Enviando o número corretamente
           externalKey: process.env.EXTERNAL_KEY,
           note: {
-            body: "Mensagem automática via webhook por *_Júnior Santos_*",
+            body: "Mensagem automática via webhook [customer-supervisor] - por *_Júnior Santos_*",
             mediaUrl: ""
           }
         })
